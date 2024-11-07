@@ -1,51 +1,73 @@
+<?php
+
+include('connection.php');
+
+$con= connection();
+
+$sql= "SELECT * FROM users";
+$query= mysqli_query($con, $sql);
+
+?>
+
+
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Usuarios</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="stylee.css">
+    <link rel="stylesheet" href="CSS/style.css">
+    <title>Usuarios CRUD</title>
 </head>
+
 <body>
+    <div class="users-form">
+        <form action="insert_user.php" method="POST"> 
+            <h1>Crear usuario</h1>
+
+            <input type="text" name="name" placeholder="Nombre">
+            <input type="text" name="lastname" placeholder="Apellido">
+            <input type="text" name="username" placeholder="Username">
+            <input type="text" name="password" placeholder="Password">
+            <input type="text" name="email" placeholder="Email">
+
+            <input type="submit" value="Agregar usuario.">
         
-        <!-- Formulario para guardar usuario -->
-
-        <form method="post"  autocomplete="off">
-            <h2> Bienbenido a su nube de confianza </h2>
-
-            <div class="input-group"> 
-
-            <div class="input-container"> 
-                 <input type="text" name="name" placeholder="Nombre"> 
-                 <i class="fa-solid fa-user"> </i> 
-            </div> 
-        
-
-            <div class="input-container"> 
-                 <input type="password" name="password" placeholder="contraseña"> 
-                 <i class="fa-solid fa-lock"> </i> 
-            </div> 
-
-            <div class="input-container"> 
-                 <input type="email" name="email" placeholder="Correo"> 
-                 <i class="fa-solid fa-envelope"> </i> 
-            </div> 
-
-            <div class="input-container"> 
-                 <input type="tel" name="phone" placeholder="Telefono"> 
-                 <i class="fa-solid fa-phone"> </i> 
-            </div> 
-            <a href="#"> Terminos y Condiciones </a> 
-            <input type="submint" name="send" class="btn" value="Enviar">  
-
-             </div>
         </form>
-        
-        <?php
-           include("send.php"); 
-        ?>
+</div>   
 
+    <div class="users-table">
+    <h2>Usuarios registrados</h2>
 
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        <tbody>
+            <?php while($row= mysqli_fetch_array($query)): ?>
+            <tr>
+                <th> <?= $row['id'] ?> </th>
+                <th> <?= $row['name'] ?> </th>
+                <th> <?= $row['lastname'] ?> </th>
+                <th> <?= $row['username'] ?> </th>
+                <th> <?= $row['password'] ?> </th>
+                <th> <?= $row['email'] ?> </th>
+
+                <th><a href="update.php?id=<?= $row['id'] ?>" class="users-table--edit">Editar</a></th>
+                <th><a href="delete_user.php?id=<?= $row['id'] ?>" class="users-table--delete">Eliminar</a></th>
+            </tr>
+            <?php  endwhile;  ?>
+        </tbody>    
+        </table>
+    </div>
 </body>
 </html>
